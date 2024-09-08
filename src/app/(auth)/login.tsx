@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
+import { Button } from '@/components/ui/button/button';
 import { Container } from '@/components/ui/container';
 import { Label, Title } from '@/components/ui/typography';
 
@@ -35,20 +36,20 @@ export default (): JSX.Element => {
             className="h-14 w-full font-[GeneralSansMedium] text-2xl"
           />
         </View>
-        <Pressable
+        <Button
+          title="Login"
           onPress={onSubmit}
-          className="items-center justify-between rounded-2xl bg-blue-500 p-3"
-        >
-          <Label className="text-center text-white">Login</Label>
-        </Pressable>
+          className="bg-blue-500"
+          textClassName="text-slate-200"
+        />
       </View>
 
-      <Pressable
+      <Button
+        className="bg-slate-500"
         onPress={onCreateAccount}
-        className="items-center justify-between rounded-2xl bg-slate-500 p-3"
-      >
-        <Label className="text-center text-white">Create an account</Label>
-      </Pressable>
+        title="Create an account"
+        textClassName="text-slate-200"
+      />
     </Container>
   );
 };
