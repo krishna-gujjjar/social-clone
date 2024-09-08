@@ -19,6 +19,7 @@
     "expo-router": "~3.5.23",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
+    "firebase": "^10.13.1",
     "nativewind": "^4.1.6",
     "react": "18.2.0",
     "react-hook-form": "^7.53.0",
@@ -41,5 +42,5 @@
     "typescript": "~5.3.3"
   },
   "private": true,
-  "trustedDependencies": ["@biomejs/biome"]
+  "trustedDependencies": ["@biomejs/biome", "protobufjs"]
 }
