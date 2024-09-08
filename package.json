@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
+    "android": "expo start --android",
     "start": "expo start",
-    "android": "expo start --android"
+    "lint": "biome check .",
+    "lint:fix": "biome format --fix"
   },
   "dependencies": {
     "expo": "~51.0.28",
@@ -21,9 +23,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@biomejs/biome": "^1.8.3",
     "@types/react": "~18.2.79",
     "tailwindcss": "^3.4.10",
     "typescript": "~5.3.3"
   },
-  "private": true
+  "private": true,
+  "trustedDependencies": ["@biomejs/biome"]
 }

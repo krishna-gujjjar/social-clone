@@ -1,8 +1,4 @@
 {
-    "cSpell.words": [
-        "firestore",
-        "nativewind",
-        "tailwindcss"
-    ],
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "cSpell.words": ["biomejs", "firestore", "nativewind", "tailwindcss"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
