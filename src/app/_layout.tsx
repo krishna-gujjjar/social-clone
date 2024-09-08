@@ -1,5 +1,5 @@
 import { Slot } from 'expo-router';
 
-import '../global.css';
+import '@/styles/global.css';
 
 export default (): JSX.Element => <Slot />;
