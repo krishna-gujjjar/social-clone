@@ -4,9 +4,11 @@
     "clsx",
     "firestore",
     "hookform",
+    "MMKV",
     "nativewind",
     "Pressable",
-    "tailwindcss"
+    "tailwindcss",
+    "Zustand"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
