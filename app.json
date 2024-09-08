@@ -18,6 +18,18 @@
         "backgroundColor": "#ffffff"
       }
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      "expo-router",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./src/assets/fonts/GeneralSans-Bold.otf",
+            "./src/assets/fonts/GeneralSans-Medium.otf",
+            "./src/assets/fonts/GeneralSans-Semibold.otf"
+          ]
+        }
+      ]
+    ]
   }
 }
