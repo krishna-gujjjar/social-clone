@@ -6,8 +6,11 @@
     "hookform",
     "MMKV",
     "nativewind",
+    "piccy",
     "Pressable",
+    "socialclone",
     "tailwindcss",
+    "webp",
     "Zustand"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"
