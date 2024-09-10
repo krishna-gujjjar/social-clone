@@ -3,12 +3,14 @@ import { Link } from 'expo-router';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
+import { Alert } from 'react-native';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Col, Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Heading } from '@/components/ui/typography';
+import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
   firstName: z.string().min(3).optional(),
@@ -20,11 +22,19 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default (): JSX.Element => {
-  const { control, handleSubmit } = useForm<FormSchema>({
+  const { register } = useAuth();
+  const { control, handleSubmit, formState } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = useCallback(data => {}, []);
+  const onSubmit: SubmitHandler<FormSchema> = useCallback(
+    data => {
+      register(data.email, data.password, data?.firstName, data?.lastName)
+        .then(console.log)
+        .catch(error => Alert.alert('Registration Error: ', JSON.stringify(error?.message)));
+    },
+    [register],
+  );
 
   return (
     <Container className="gap-8">
@@ -68,13 +78,15 @@ export default (): JSX.Element => {
           title="Register"
           className="bg-blue-500"
           textClassName="text-slate-200"
+          disabled={formState.isLoading}
           onPress={handleSubmit(onSubmit)}
         />
       </Col>
 
-      <Link asChild href="/(auth)/login">
+      <Link asChild href="/(auth)/login" disabled={formState.isLoading}>
         <Button
           className="bg-slate-500"
+          disabled={formState.isLoading}
           title="Already have an account"
           textClassName="text-slate-200"
         />
