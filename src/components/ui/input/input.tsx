@@ -14,7 +14,7 @@ import { cn } from '@/utils/style';
 import { ConditionalRender } from '../conditional-render';
 import { Inline } from '../container';
 import { MaterialIcon } from '../icons';
-import { Label, Tiny } from '../typography';
+import { Paragraph, Tiny } from '../typography';
 
 interface InputProps extends WithClassName {
   name: string;
@@ -34,7 +34,7 @@ const Component = (props: InputProps): JSX.Element => (
     control={props.control}
     render={controlledProps => (
       <View style={props.style} className={cn('gap-2', props.className ?? '')}>
-        <Label>{props.label}</Label>
+        <Paragraph>{props.label}</Paragraph>
         <Inline
           className={cn(
             'gap-2 overflow-hidden rounded-2xl px-2 py-1',
