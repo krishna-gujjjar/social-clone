@@ -9,6 +9,7 @@ import { Label } from '../typography';
 
 interface ButtonProps extends WithClassName {
   title?: string;
+  disabled?: boolean;
   textClassName?: string;
   onPress?: () => void;
 }
@@ -18,6 +19,7 @@ const Component = (props: ButtonProps, ref: Ref<View>) => (
     ref={ref}
     style={props.style}
     onPress={props.onPress}
+    disabled={props.disabled}
     className={cn('items-center justify-between rounded-2xl p-3', props.className ?? '')}
   >
     {props.children || <Label className={props.textClassName}>{props.title}</Label>}
