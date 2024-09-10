@@ -39,7 +39,7 @@ export const TabItem = (props: TabProps): JSX.Element => {
 
   const animatedTextStyle = useAnimatedStyle(() => {
     const opacity = interpolate(x.value, [0, 1], [1, 0]);
-    const scale = interpolate(x.value, [1, 0], [0, 1]);
+    const scale = withSpring(interpolate(x.value, [1, 0], [0, 1]));
 
     return { color: '#475569', fontSize: 12, opacity, transform: [{ scale }] };
   });
