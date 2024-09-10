@@ -2,20 +2,20 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import type { StateStorage } from 'zustand/middleware';
 
-import LocalStorage from './mmkv';
+import { localStorage } from './mmkv';
 import { createUserSlice } from './slices/user';
 import type { StoreState } from './type';
 
 const ZustandMMKVStorage: StateStorage = {
   setItem: (name: string, value: string) => {
-    return LocalStorage.set(name, value);
+    return localStorage.set(name, value);
   },
   getItem: (name: string) => {
-    const value = LocalStorage.getString(name);
+    const value = localStorage.getString(name);
     return value ?? null;
   },
   removeItem: (name: string) => {
-    return LocalStorage.delete(name);
+    return localStorage.delete(name);
   },
 };
 
@@ -26,4 +26,4 @@ const useStore = create<StoreState>()(
   }),
 );
 
-export { useStore };
+export { useStore, ZustandMMKVStorage };
