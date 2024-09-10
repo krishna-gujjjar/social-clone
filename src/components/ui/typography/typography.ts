@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants';
 import type { WithClassNameVariants } from '@/types/common';
 
 export const typography = tv({
-  base: 'text-slate-900',
+  base: 'text-slate-800',
   variants: {
     type: {
       display: 'text-6xl font-[GeneralSansMedium]',
