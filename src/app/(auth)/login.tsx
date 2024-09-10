@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Col, Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
+import { Loading } from '@/components/ui/loading';
 import { Title } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -20,9 +21,10 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default (): JSX.Element => {
+  const router = useRouter();
   const { login } = useAuth();
 
-  const { control, handleSubmit, reset } = useForm<FormSchema>({
+  const { control, formState, handleSubmit, reset, setFocus } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
@@ -31,24 +33,28 @@ export default (): JSX.Element => {
       login(data.email, data.password)
         .then(() => {
           reset({ email: '', password: '' });
+          router.replace('/');
         })
         .catch(error => Alert.alert('Login Error:', JSON.stringify(error.message)));
     },
-    [login, reset],
+    [login, reset, router],
   );
 
   return (
     <Container className="flex-col justify-between gap-4">
       <Title>Login</Title>
+      {formState.isLoading && <Loading />}
 
       <Col className="gap-4">
         <Input
           name="email"
           // @ts-ignore
           control={control}
+          returnKeyType="next"
           label="Email Address"
           iconName="alternate-email"
           placeholder="Enter your email address"
+          onSubmitEditing={() => setFocus('password')}
         />
         <Input
           name="password"
@@ -57,7 +63,9 @@ export default (): JSX.Element => {
           label="Password"
           // @ts-ignore
           control={control}
+          returnKeyType="done"
           placeholder="Enter your password"
+          onSubmitEditing={handleSubmit(onSubmit)}
         />
 
         <Button

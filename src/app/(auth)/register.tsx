@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Col, Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
+import { Loading } from '@/components/ui/loading';
 import { Heading } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -23,7 +24,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export default (): JSX.Element => {
   const { register } = useAuth();
-  const { control, handleSubmit, formState } = useForm<FormSchema>({
+  const { control, formState, handleSubmit, setFocus } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
@@ -39,15 +40,18 @@ export default (): JSX.Element => {
   return (
     <Container className="gap-8">
       <Heading>Create an Account</Heading>
+      {formState.isLoading && <Loading />}
 
       <Col className="gap-4">
         <Input
           name="firstName"
           // @ts-ignore
           control={control}
-          label="First Name"
           iconName="person"
+          label="First Name"
+          returnKeyType="next"
           placeholder="Enter your first name"
+          onSubmitEditing={() => setFocus('lastName')}
         />
         <Input
           name="lastName"
@@ -55,15 +59,19 @@ export default (): JSX.Element => {
           control={control}
           label="Last Name"
           iconName="person"
+          returnKeyType="next"
           placeholder="Enter your last name"
+          onSubmitEditing={() => setFocus('email')}
         />
         <Input
           name="email"
           // @ts-ignore
           control={control}
+          returnKeyType="next"
           label="Email Address"
           iconName="alternate-email"
           placeholder="Enter your email address"
+          onSubmitEditing={() => setFocus('password')}
         />
         <Input
           name="password"
@@ -72,23 +80,23 @@ export default (): JSX.Element => {
           label="Password"
           // @ts-ignore
           control={control}
+          returnKeyType="done"
           placeholder="Enter your password"
+          onSubmitEditing={handleSubmit(onSubmit)}
         />
         <Button
           title="Register"
           className="bg-blue-500"
           textClassName="text-slate-200"
-          disabled={formState.isLoading}
           onPress={handleSubmit(onSubmit)}
         />
       </Col>
 
-      <Link asChild href="/(auth)/login" disabled={formState.isLoading}>
+      <Link asChild href="/(auth)/login">
         <Button
           className="bg-slate-500"
-          disabled={formState.isLoading}
-          title="Already have an account"
           textClassName="text-slate-200"
+          title="Already have an account"
         />
       </Link>
     </Container>
