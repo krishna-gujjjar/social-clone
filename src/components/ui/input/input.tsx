@@ -1,9 +1,13 @@
-import { forwardRef, memo } from 'react';
-import type { Ref } from 'react';
+import { memo } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Control, FieldValues } from 'react-hook-form';
 import { TextInput, View } from 'react-native';
-import type { KeyboardTypeOptions } from 'react-native';
+import type {
+  KeyboardTypeOptions,
+  NativeSyntheticEvent,
+  ReturnKeyTypeOptions,
+  TextInputSubmitEditingEventData,
+} from 'react-native';
 
 import type { WithClassName } from '@/types/common';
 import { cn } from '@/utils/style';
@@ -20,9 +24,11 @@ interface InputProps extends WithClassName {
   secureTextEntry?: boolean;
   control: Control<FieldValues>;
   keyboardType?: KeyboardTypeOptions;
+  returnKeyType?: ReturnKeyTypeOptions;
+  onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
 }
 
-const Component = (props: InputProps, ref: Ref<TextInput>): JSX.Element => (
+const Component = (props: InputProps): JSX.Element => (
   <Controller
     name={props.name}
     control={props.control}
@@ -48,13 +54,15 @@ const Component = (props: InputProps, ref: Ref<TextInput>): JSX.Element => (
             />
           )}
           <TextInput
-            ref={ref}
             numberOfLines={1}
             cursorColor="rgb(59 130 246)"
             placeholder={props.placeholder}
+            ref={controlledProps.field.ref}
             keyboardType={props.keyboardType}
+            returnKeyType={props.returnKeyType}
             value={controlledProps.field.value}
             onBlur={controlledProps.field.onBlur}
+            onSubmitEditing={props.onSubmitEditing}
             secureTextEntry={props.secureTextEntry}
             onChangeText={controlledProps.field.onChange}
             className="h-14 w-full font-[GeneralSansMedium] text-2xl"
@@ -68,7 +76,6 @@ const Component = (props: InputProps, ref: Ref<TextInput>): JSX.Element => (
   />
 );
 
-const ComponentRef = forwardRef(Component);
-const Input = memo(ComponentRef);
+const Input = memo(Component);
 Input.displayName = 'Components.UI.Input';
 export { Input };
