@@ -1,20 +1,11 @@
 import type { StoreApi } from 'zustand';
-
-export interface IUser {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  created_at: string;
-  updated_at: string;
-}
+import type { User } from '../schema/auth';
 
 export interface UserSlice {
   isLoggedIn: boolean;
-  userData: IUser | null;
-  resetUserData: () => void;
+  userData: User | null;
   setLoggedIn: (isLoggedIn: boolean) => void;
-  setUserData: (userData: IUser | null) => void;
+  setUserData: (userData: User | null) => void;
 }
 
 export type StoreState = UserSlice;
