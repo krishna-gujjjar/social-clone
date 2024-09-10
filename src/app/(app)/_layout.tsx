@@ -1,5 +1,6 @@
+import { Redirect, Tabs } from 'expo-router';
+
 import { useStore } from '@/services/storages';
-import { Redirect, Slot } from 'expo-router';
 
 export default (): JSX.Element => {
   const isLoggedIn = useStore(state => state.isLoggedIn);
@@ -8,5 +9,11 @@ export default (): JSX.Element => {
     return <Redirect href="/(auth)/login" />;
   }
 
-  return <Slot />;
+  return (
+    <Tabs screenOptions={{ headerShown: false }}>
+      <Tabs.Screen name="index" options={{ title: 'Home' }} />
+      <Tabs.Screen name="search" options={{ title: 'Search' }} />
+      <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+    </Tabs>
+  );
 };
