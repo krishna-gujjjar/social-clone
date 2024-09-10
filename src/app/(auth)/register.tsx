@@ -1,16 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
-import { useCallback } from 'react';
+import { Link, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
-import { Alert } from 'react-native';
+import { Alert, Image } from 'react-native';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Col, Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import { Heading } from '@/components/ui/typography';
+import { Heading, Label } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
@@ -23,24 +23,36 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default (): JSX.Element => {
+  const router = useRouter();
   const { register } = useAuth();
-  const { control, formState, handleSubmit, setFocus } = useForm<FormSchema>({
+  const [isLoading, setIsLoading] = useState(false);
+  const { control, handleSubmit, reset, setFocus } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
     data => {
+      setIsLoading(true);
       register(data.email, data.password, data?.firstName, data?.lastName)
-        .then(console.log)
-        .catch(error => Alert.alert('Registration Error: ', JSON.stringify(error?.message)));
+        .then(() => {
+          reset({ email: '', password: '', firstName: '', lastName: '' });
+          router.replace('/');
+        })
+        .catch(error => Alert.alert('Registration Error: ', JSON.stringify(error?.message)))
+        .finally(() => setIsLoading(false));
     },
-    [register],
+    [register, router, reset],
   );
 
   return (
-    <Container className="gap-8">
-      <Heading>Create an Account</Heading>
-      {formState.isLoading && <Loading />}
+    <Container>
+      <Image source={require('@/assets/images/app-icon.png')} className="size-24 rounded-3xl" />
+      <Col className="my-8">
+        <Heading>Welcome!</Heading>
+        <Label className="text-slate-600">Crate a new account.</Label>
+      </Col>
+
+      {isLoading && <Loading />}
 
       <Col className="gap-4">
         <Input
@@ -92,11 +104,11 @@ export default (): JSX.Element => {
         />
       </Col>
 
-      <Link asChild href="/(auth)/login">
+      <Link asChild href="/(auth)/login" className="absolute bottom-10 self-center">
         <Button
-          className="bg-slate-500"
           textClassName="text-slate-200"
           title="Already have an account"
+          className="w-full bg-slate-500"
         />
       </Link>
     </Container>

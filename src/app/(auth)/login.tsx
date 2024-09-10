@@ -1,16 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
-import { Alert } from 'react-native';
+import { Alert, Image } from 'react-native';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Col, Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import { Title } from '@/components/ui/typography';
+import { Heading, Label } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
@@ -23,27 +23,35 @@ type FormSchema = z.infer<typeof formSchema>;
 export default (): JSX.Element => {
   const router = useRouter();
   const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { control, formState, handleSubmit, reset, setFocus } = useForm<FormSchema>({
+  const { control, handleSubmit, reset, setFocus } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
     data => {
+      setIsLoading(true);
       login(data.email, data.password)
         .then(() => {
           reset({ email: '', password: '' });
           router.replace('/');
         })
-        .catch(error => Alert.alert('Login Error:', JSON.stringify(error.message)));
+        .catch(error => Alert.alert('Login Error:', JSON.stringify(error.message)))
+        .finally(() => setIsLoading(false));
     },
     [login, reset, router],
   );
 
   return (
-    <Container className="flex-col justify-between gap-4">
-      <Title>Login</Title>
-      {formState.isLoading && <Loading />}
+    <Container>
+      <Image source={require('@/assets/images/app-icon.png')} className="size-24 rounded-3xl" />
+      <Col className="my-12">
+        <Heading>Welcome Back!</Heading>
+        <Label className="text-slate-600">Login to continue.</Label>
+      </Col>
+
+      {isLoading && <Loading />}
 
       <Col className="gap-4">
         <Input
@@ -76,8 +84,12 @@ export default (): JSX.Element => {
         />
       </Col>
 
-      <Link asChild href="/(auth)/register">
-        <Button title="Create an account" className="bg-slate-500" textClassName="text-slate-200" />
+      <Link asChild href="/(auth)/register" className="absolute bottom-10 self-center">
+        <Button
+          title="Create an account"
+          textClassName="text-slate-200"
+          className="w-full bg-slate-500"
+        />
       </Link>
     </Container>
   );
