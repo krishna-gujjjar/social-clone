@@ -1,5 +1,6 @@
 import { Redirect, Tabs } from 'expo-router';
 
+import { TabBar } from '@/components/tab-bar';
 import { useStore } from '@/services/storages';
 
 export default (): JSX.Element => {
@@ -10,7 +11,7 @@ export default (): JSX.Element => {
   }
 
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs tabBar={props => <TabBar {...props} />} screenOptions={{ headerShown: false }}>
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
       <Tabs.Screen name="search" options={{ title: 'Search' }} />
       <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
