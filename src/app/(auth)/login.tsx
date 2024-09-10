@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'expo-router';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
@@ -9,21 +10,32 @@ import { Button } from '@/components/ui/button';
 import { Col, Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Title } from '@/components/ui/typography';
+import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(3),
+  password: z.string().min(6),
 });
 
+type FormSchema = z.infer<typeof formSchema>;
+
 export default (): JSX.Element => {
-  const { control, handleSubmit } = useForm<z.infer<typeof formSchema>>({
+  const { login } = useAuth();
+
+  const { control, handleSubmit, reset } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = useCallback(data => {
-    Alert.alert(JSON.stringify(data));
-  }, []);
-  const onCreateAccount = useCallback(() => {}, []);
+  const onSubmit: SubmitHandler<FormSchema> = useCallback(
+    data => {
+      login(data.email, data.password)
+        .then(() => {
+          reset({ email: '', password: '' });
+        })
+        .catch(error => Alert.alert('Login Error:', JSON.stringify(error.message)));
+    },
+    [login, reset],
+  );
 
   return (
     <Container className="flex-col justify-between gap-4">
@@ -50,18 +62,15 @@ export default (): JSX.Element => {
 
         <Button
           title="Login"
-          onPress={handleSubmit(onSubmit)}
           className="bg-blue-500"
           textClassName="text-slate-200"
+          onPress={handleSubmit(onSubmit)}
         />
       </Col>
 
-      <Button
-        onPress={onCreateAccount}
-        title="Create an account"
-        className="bg-slate-500"
-        textClassName="text-slate-200"
-      />
+      <Link asChild href="/(auth)/register">
+        <Button title="Create an account" className="bg-slate-500" textClassName="text-slate-200" />
+      </Link>
     </Container>
   );
 };
