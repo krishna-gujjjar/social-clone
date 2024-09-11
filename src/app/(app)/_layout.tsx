@@ -1,5 +1,4 @@
-import { Redirect } from 'expo-router';
-import { Stack } from 'expo-router';
+import { Redirect, Slot } from 'expo-router';
 
 import { useStore } from '@/services/storages';
 
@@ -10,9 +9,5 @@ export default (): JSX.Element => {
     return <Redirect href="/(auth)/login" />;
   }
 
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-    </Stack>
-  );
+  return <Slot />;
 };
