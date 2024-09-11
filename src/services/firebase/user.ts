@@ -1,14 +1,13 @@
-import { Timestamp, doc, getDoc, setDoc } from 'firebase/firestore';
-import { Alert } from 'react-native';
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import type { z } from 'zod';
 
 import { userSchema } from '../schema/auth';
 import type { authSchema } from '../schema/auth';
 import { db } from './firebase';
 
-const createUser = async (uid: string, user: z.infer<typeof authSchema>) => {
-  const now = Timestamp.fromDate(new Date());
+const now = Timestamp.fromDate(new Date());
 
+const createUser = async (uid: string, user: z.infer<typeof authSchema>) => {
   const parsedData = userSchema.safeParse({
     userId: uid,
     email: user.email,
@@ -22,12 +21,7 @@ const createUser = async (uid: string, user: z.infer<typeof authSchema>) => {
     updatedAt: now,
   });
 
-  try {
-    return await setDoc(doc(db, 'users', uid), parsedData.data);
-  } catch (error) {
-    // @ts-ignore
-    Alert.alert('Error in creating user', JSON.stringify(error?.message));
-  }
+  return await setDoc(doc(db, 'users', uid), parsedData.data);
 };
 
 const getUser = async (uid: string) => {
@@ -35,4 +29,8 @@ const getUser = async (uid: string) => {
   return userSchema.safeParse(user.data())?.data;
 };
 
-export { createUser, getUser };
+const updateUser = async (uid: string, user: Partial<z.infer<typeof userSchema>>) => {
+  return await updateDoc(doc(db, 'users', uid), { ...user, updatedAt: now });
+};
+
+export { createUser, getUser, updateUser };
