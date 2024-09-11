@@ -1,11 +1,11 @@
-import MaterialIcon from '@expo/vector-icons/MaterialIcons';
+import { Ionicons } from '@expo/vector-icons';
 import { cssInterop } from 'nativewind';
 
-cssInterop(MaterialIcon, {
+cssInterop(Ionicons, {
   className: {
     target: 'style',
     nativeStyleToProp: { color: true },
   },
 });
 
-export { MaterialIcon };
+export { Ionicons };

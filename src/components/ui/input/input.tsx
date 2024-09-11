@@ -13,7 +13,7 @@ import type { WithClassName } from '@/types/common';
 import { cn } from '@/utils/style';
 import { ConditionalRender } from '../conditional-render';
 import { Inline } from '../container';
-import { MaterialIcon } from '../icons';
+import { Ionicons } from '../icons';
 import { Paragraph, Tiny } from '../typography';
 
 interface InputProps extends WithClassName {
@@ -37,20 +37,18 @@ const Component = (props: InputProps): JSX.Element => (
         <Paragraph>{props.label}</Paragraph>
         <Inline
           className={cn(
-            'gap-2 overflow-hidden rounded-2xl px-2 py-1',
+            'gap-2 overflow-hidden rounded-2xl px-3 py-1',
             controlledProps.fieldState.invalid
               ? 'border border-red-500 bg-red-50'
               : 'border border-slate-300 bg-slate-200',
           )}
         >
           {props.iconName && (
-            <MaterialIcon
+            <Ionicons
+              size={24}
               // @ts-ignore
               name={props.iconName}
-              className={cn(
-                'text-3xl',
-                controlledProps.fieldState.invalid ? 'color-red-500' : 'color-slate-800',
-              )}
+              className={controlledProps.fieldState.invalid ? 'color-red-500' : 'color-slate-800'}
             />
           )}
           <TextInput

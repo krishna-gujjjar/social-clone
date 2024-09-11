@@ -1,4 +1,4 @@
-import { MaterialIcon } from '@/components/ui/icons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface IconProps {
   color: string;
@@ -6,11 +6,7 @@ interface IconProps {
 }
 
 export const icons: Record<string, (props: IconProps) => JSX.Element> = {
-  index: (props: IconProps) => <MaterialIcon name="home" color={props.color} size={props.size} />,
-  search: (props: IconProps) => (
-    <MaterialIcon name="search" color={props.color} size={props.size} />
-  ),
-  profile: (props: IconProps) => (
-    <MaterialIcon name="person" color={props.color} size={props.size} />
-  ),
+  index: (props: IconProps) => <Ionicons name="home" color={props.color} size={props.size} />,
+  search: (props: IconProps) => <Ionicons name="search" color={props.color} size={props.size} />,
+  profile: (props: IconProps) => <Ionicons name="person" color={props.color} size={props.size} />,
 };

@@ -56,22 +56,22 @@ export default (): JSX.Element => {
       <Col className="gap-4">
         <Input
           name="email"
+          iconName="at"
           // @ts-ignore
           control={control}
           returnKeyType="next"
           label="Email Address"
-          iconName="alternate-email"
           placeholder="Enter your email address"
           onSubmitEditing={() => setFocus('password')}
         />
         <Input
           name="password"
           secureTextEntry
-          iconName="lock"
           label="Password"
           // @ts-ignore
           control={control}
           returnKeyType="done"
+          iconName="lock-closed"
           placeholder="Enter your password"
           onSubmitEditing={handleSubmit(onSubmit)}
         />
