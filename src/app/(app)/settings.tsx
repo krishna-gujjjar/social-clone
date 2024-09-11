@@ -7,11 +7,9 @@ import { Col, Container, Inline } from '@/components/ui/container';
 import { Ionicons } from '@/components/ui/icons';
 import { Paragraph, Tiny, Title } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
-import { useStore } from '@/services/storages';
 
 export default (): JSX.Element => {
-  const { logout } = useAuth();
-  const user = useStore(state => state.userData);
+  const { logout, user } = useAuth();
 
   const onLogout = useCallback(() => {
     logout().then(() => console.log('logged out'));
@@ -27,8 +25,8 @@ export default (): JSX.Element => {
           source={typeof user?.profileImage === 'string' ? { uri: user?.profileImage } : undefined}
         />
         <Col>
-          <Title>
-            {user?.name.first ?? 'No'} {user?.name.last ?? 'Name'}
+          <Title className="capitalize">
+            {`${user?.name.first ?? 'No'} ${user?.name.last ?? 'Name'}`}
           </Title>
           <Tiny>{user?.email}</Tiny>
         </Col>
@@ -36,9 +34,10 @@ export default (): JSX.Element => {
 
       <Col>
         <Link asChild href="/edit">
-          <Button className="flex flex-row bg-slate-200 p-4">
+          <Button className="flex flex-row justify-start gap-2 bg-slate-200 p-4">
+            <Ionicons name="create" size={24} className="text-blue-600" />
             <Paragraph>Edit Profile</Paragraph>
-            <Ionicons name="chevron-forward" size={24} />
+            <Ionicons name="chevron-forward" size={24} className="ml-auto" />
           </Button>
         </Link>
       </Col>

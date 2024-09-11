@@ -6,10 +6,10 @@ import { Col, Container, Inline } from '@/components/ui/container';
 import { Ionicons } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
 import { Heading, Tiny, Title } from '@/components/ui/typography';
-import { useStore } from '@/services/storages';
+import { useAuth } from '@/hooks/useAuth';
 
 export default (): JSX.Element => {
-  const user = useStore(state => state.userData);
+  const { user } = useAuth();
 
   return (
     <Container className="gap-6">
@@ -27,7 +27,7 @@ export default (): JSX.Element => {
         </Link>
       </Inline>
       <Col className="gap-2">
-        <Heading>
+        <Heading className="capitalize">
           {user?.name.first ?? 'No'} {user?.name.last ?? 'Name'}
         </Heading>
         <Tiny className="h-28 text-justify text-slate-600">{user?.bio ?? 'No bio yet'}</Tiny>

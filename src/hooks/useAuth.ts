@@ -7,6 +7,7 @@ import type { userSchema } from '@/services/schema/auth';
 import { useStore } from '@/services/storages';
 
 export const useAuth = () => {
+  const user = useStore(state => state.userData);
   const isLoggedIn = useStore(state => state.isLoggedIn);
   const setLoggedIn = useStore(state => state.setLoggedIn);
   const setUserData = useStore(state => state.setUserData);
@@ -71,5 +72,5 @@ export const useAuth = () => {
     setUserData(null);
   }, [setLoggedIn, setUserData]);
 
-  return { isLoggedIn, login, logout, register, updateSelf };
+  return { isLoggedIn, login, logout, register, user, updateSelf };
 };
