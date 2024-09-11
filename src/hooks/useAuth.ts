@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
+import type { z } from 'zod';
 
 import { loginAction, logoutAction, registerAction } from '@/services/firebase/auth';
-import { getUser } from '@/services/firebase/user';
+import { getUser, updateUser } from '@/services/firebase/user';
+import type { userSchema } from '@/services/schema/auth';
 import { useStore } from '@/services/storages';
 
 export const useAuth = () => {
@@ -50,11 +52,24 @@ export const useAuth = () => {
     [fetchUserData, setLoggedIn],
   );
 
+  const updateSelf = useCallback(
+    async (data: Partial<z.infer<typeof userSchema>>) => {
+      if (typeof user?.userId === 'string') {
+        await updateUser(user?.userId, data);
+
+        return await fetchUserData(user.userId);
+      }
+
+      return null;
+    },
+    [fetchUserData, user?.userId],
+  );
+
   const logout = useCallback(async () => {
     await logoutAction();
     setLoggedIn(false);
     setUserData(null);
   }, [setLoggedIn, setUserData]);
 
-  return { isLoggedIn, login, logout, register };
+  return { isLoggedIn, login, logout, register, updateSelf };
 };
