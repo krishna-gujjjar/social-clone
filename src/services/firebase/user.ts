@@ -15,6 +15,7 @@ const createUser = async (uid: string, user: z.infer<typeof authSchema>) => {
     bio: user.bio ?? null,
     followers: user.followers ?? [],
     following: user.following ?? [],
+    posts: user.posts ?? [],
     profileImage: user.profileImage ?? null,
     name: user.name ?? { first: null, last: null },
     createdAt: now,

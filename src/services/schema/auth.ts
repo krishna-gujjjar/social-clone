@@ -13,6 +13,7 @@ const authSchema = z.object({
   profileImage: z.string().nullish(),
   followers: z.array(z.string()).optional(),
   following: z.array(z.string()).optional(),
+  posts: z.array(z.string()).optional(),
 });
 
 const userSchema = z.object({
@@ -26,6 +27,7 @@ const userSchema = z.object({
   profileImage: z.string().nullable(),
   followers: z.array(z.string()),
   following: z.array(z.string()),
+  posts: z.array(z.string()),
   createdAt: z.instanceof(Timestamp),
   updatedAt: z.instanceof(Timestamp),
 });

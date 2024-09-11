@@ -1,11 +1,11 @@
-import type { IUser, StoreSlice, UserSlice } from '../type';
+import type { StoreSlice, UserSlice } from '../type';
 
 export const createUserSlice: StoreSlice<UserSlice> = set => ({
   isLoggedIn: false,
-  setLoggedIn: (isLoggedIn: boolean) => set({ isLoggedIn: isLoggedIn }),
+  setLoggedIn: isLoggedIn => set({ isLoggedIn: isLoggedIn }),
 
   userData: null,
-  setUserData: (userData: IUser | null) => set({ userData: userData }),
+  setUserData: userData => set({ userData: userData }),
 
   resetUserData: () => set({ userData: null, isLoggedIn: false }),
 });
