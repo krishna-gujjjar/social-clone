@@ -20,7 +20,10 @@ interface InputProps extends WithClassName {
   name: string;
   label?: string;
   iconName?: string;
+  multiline?: boolean;
   placeholder?: string;
+  defaultValue?: string;
+  numberOfLines?: number;
   secureTextEntry?: boolean;
   control: Control<FieldValues>;
   keyboardType?: KeyboardTypeOptions;
@@ -32,9 +35,10 @@ const Component = (props: InputProps): JSX.Element => (
   <Controller
     name={props.name}
     control={props.control}
+    defaultValue={props.defaultValue}
     render={controlledProps => (
       <View style={props.style} className={cn('gap-2', props.className ?? '')}>
-        <Paragraph>{props.label}</Paragraph>
+        <Paragraph className="text-slate-500">{props.label}</Paragraph>
         <Inline
           className={cn(
             'gap-2 overflow-hidden rounded-2xl px-3 py-1',
@@ -52,18 +56,23 @@ const Component = (props: InputProps): JSX.Element => (
             />
           )}
           <TextInput
-            numberOfLines={1}
+            multiline={props.multiline}
             cursorColor="rgb(59 130 246)"
             placeholder={props.placeholder}
             ref={controlledProps.field.ref}
             keyboardType={props.keyboardType}
+            defaultValue={props.defaultValue}
             returnKeyType={props.returnKeyType}
             value={controlledProps.field.value}
             onBlur={controlledProps.field.onBlur}
             onSubmitEditing={props.onSubmitEditing}
             secureTextEntry={props.secureTextEntry}
+            numberOfLines={props.multiline ? 5 : 1}
             onChangeText={controlledProps.field.onChange}
-            className="h-14 w-full font-[GeneralSansMedium] text-2xl"
+            className={cn(
+              'w-full font-[GeneralSansMedium] text-2xl',
+              props.multiline ? 'h-44' : 'h-12',
+            )}
           />
         </Inline>
         <ConditionalRender shouldRender={controlledProps.fieldState.invalid}>
