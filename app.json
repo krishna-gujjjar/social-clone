@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "social-clone",
+    "name": "Social Clone",
     "slug": "social-clone",
     "scheme": "social-clone",
     "version": "1.0.0",
@@ -13,6 +13,7 @@
       "backgroundColor": "#ffffff"
     },
     "android": {
+      "icon": "./src/assets/images/app-icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
