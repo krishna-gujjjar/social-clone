@@ -51,7 +51,7 @@ export const TabItem = (props: TabProps): JSX.Element => {
       className="flex size-20 items-center justify-center overflow-hidden p-4"
     >
       <Animated.View style={animatedStyle}>
-        {icons[props.routeName]({ color: props.isFocused ? '#1e293b' : '#475569', size: 24 })}
+        {icons[props.routeName]({ color: props.isFocused ? '#fff' : '#475569', size: 24 })}
       </Animated.View>
       <AnimatedText style={animatedTextStyle}>{props.label}</AnimatedText>
     </Pressable>

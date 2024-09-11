@@ -29,11 +29,11 @@ export const TabBar = (props: BottomTabBarProps) => {
   return (
     <View
       onLayout={onLayout}
-      className="absolute bottom-10 flex flex-row items-center justify-between self-center rounded-full bg-slate-400/50 shadow-lg shadow-slate-800"
+      className="absolute bottom-10 flex flex-row items-center justify-between self-center rounded-full bg-slate-100 shadow-lg shadow-slate-800"
     >
       <Animated.View
         style={animatedCircleStyle}
-        className="absolute mx-2 size-16 rounded-full bg-slate-200"
+        className="absolute mx-2 size-16 rounded-full bg-blue-500"
       />
       {props.state.routes.map((route, index) => {
         const { options } = props.descriptors[route.key];
