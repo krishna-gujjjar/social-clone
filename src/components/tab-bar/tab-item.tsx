@@ -32,7 +32,7 @@ export const TabItem = (props: TabProps): JSX.Element => {
 
   const animatedStyle = useAnimatedStyle(() => {
     const scale = withSpring(interpolate(x.value, [0, 1], [1, 1.3]), { duration: 50 });
-    const top = withSpring(interpolate(x.value, [0, 1], [1, 9]));
+    const top = withSpring(interpolate(x.value, [0, 1], [1, 12]));
 
     return { top, transform: [{ scale }] };
   });
