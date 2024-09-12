@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@/components/ui/icons';
 
 interface IconProps {
   color: string;

@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@/components/ui/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as MediaPicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
