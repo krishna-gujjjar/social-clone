@@ -1,11 +1,10 @@
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import type { z } from 'zod';
 
+import { now } from '@/utils/common';
 import { userSchema } from '../schema/auth';
 import type { authSchema } from '../schema/auth';
 import { db } from './firebase';
-
-const now = Timestamp.fromDate(new Date());
 
 const createUser = async (uid: string, user: z.infer<typeof authSchema>) => {
   const parsedData = userSchema.safeParse({

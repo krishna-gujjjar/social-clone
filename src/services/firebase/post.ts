@@ -1,6 +1,8 @@
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { type DocumentData, collection, doc, getDocs, setDoc } from 'firebase/firestore';
 
 import { now } from '@/utils/common';
+import { postSchema } from '../schema/post';
+import type { Post } from '../schema/post';
 import { db } from './firebase';
 import { uploadMedia } from './media';
 
@@ -28,4 +30,19 @@ const createPost = async (
   });
 };
 
-export { createPost };
+const getPosts = async () => {
+  const ref = collection(db, 'posts');
+  const snapshot = await getDocs(ref);
+  const extractor: DocumentData[] = [];
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  snapshot.forEach(_post => {
+    const post = postSchema.safeParse(_post.data());
+    if (post.success) {
+      extractor.push(post.data);
+    }
+  });
+
+  return extractor as Post[];
+};
+
+export { createPost, getPosts };
