@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import type { z } from 'zod';
 
-import { now } from '@/utils/common';
+import { now, updateLocalUserData } from '@/utils/common';
 import { userSchema } from '../schema/auth';
 import type { authSchema } from '../schema/auth';
 import { db } from './firebase';
@@ -28,8 +28,19 @@ const getUser = async (uid: string) => {
   return userSchema.safeParse(user.data())?.data;
 };
 
-const updateUser = async (uid: string, user: Partial<z.infer<typeof userSchema>>) => {
-  return await updateDoc(doc(db, 'users', uid), { ...user, updatedAt: now });
+const updateUser = async (
+  uid: string,
+  user: Partial<z.infer<typeof userSchema>>,
+  shouldUpdate = true,
+) => {
+  await updateDoc(doc(db, 'users', uid), { ...user, updatedAt: now });
+  const userData = await getUser(uid);
+
+  if (typeof userData !== 'undefined' && shouldUpdate) {
+    updateLocalUserData(userData);
+  }
+
+  return userData;
 };
 
 export { createUser, getUser, updateUser };
