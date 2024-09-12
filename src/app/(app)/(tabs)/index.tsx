@@ -4,16 +4,20 @@ import type { ViewToken } from 'react-native';
 
 import { Reel } from '@/components/reel';
 import { Container } from '@/components/ui/container';
+import { Loading } from '@/components/ui/loading';
 import { getPosts } from '@/services/firebase/post';
 import type { Post } from '@/services/schema/post';
 
 export default (): JSX.Element => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentViewableIndex, setCurrentViewableIndex] = useState(0);
 
   const onFetchPosts = useCallback(async () => {
+    setIsLoading(true);
     const _posts = await getPosts();
     setPosts(_posts);
+    setIsLoading(false);
   }, []);
 
   const onViewableItemsChanged = useCallback((info: { viewableItems: Array<ViewToken<Post>> }) => {
@@ -28,6 +32,7 @@ export default (): JSX.Element => {
 
   return (
     <Container className="p-0">
+      {isLoading && <Loading />}
       <FlatList
         data={posts}
         pagingEnabled
