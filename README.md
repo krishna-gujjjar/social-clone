@@ -5,20 +5,20 @@ A social media app with react native.
 
 ## Tasks
 
-- [ ] Implement firebase auth.
-- [ ] Implement State management tool.
-- [ ] Implement Local storage tool.
-- [ ] Implement firestore for the database management.
-- [ ] Implement firebase storage for the media storage management.
-- [ ] Create a account.
-- [ ] Login.
-- [ ] Logout.
-- [ ] Bottom Tab.
-- [ ] Home page with reels.
-- [ ] Upload Video file.
-- [ ] Search page.
-- [ ] Profile page.
-- [ ] Update Profile page.
+- [x] Implement firebase auth.
+- [x] Implement State management tool.
+- [x] Implement Local storage tool.
+- [x] Implement firestore for the database management.
+- [x] Implement firebase storage for the media storage management.
+- [x] Create a account.
+- [x] Login.
+- [x] Logout.
+- [x] Bottom Tab.
+- [-] Home page with reels.
+- [x] Upload Video file.
+- [-] Search page.
+- [-] Profile page.
+- [x] Update Profile page.
 - [ ] Follow other user.
 - [ ] Un-follow other user.
 - [ ] Like a post.
