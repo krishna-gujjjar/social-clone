@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Image, TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 
+import { SmallReel } from '@/components/reel';
 import { Container, Inline } from '@/components/ui/container';
 import { Loading } from '@/components/ui/loading';
 import { Tiny, Title } from '@/components/ui/typography';
@@ -47,9 +48,7 @@ export default (): JSX.Element => {
 
       <Inline className="flex-wrap justify-start gap-2">
         {posts.map(post => (
-          <View key={post.postId} className="basis-[31.9%] overflow-hidden rounded-2xl">
-            <Image source={{ uri: post.imageUrl }} className="h-44 w-full" />
-          </View>
+          <SmallReel key={post.postId} item={post} />
         ))}
       </Inline>
     </Container>
