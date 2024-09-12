@@ -1,26 +1,44 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList } from 'react-native';
+import type { ViewToken } from 'react-native';
 
-import { Button } from '@/components/ui/button';
+import { Reel } from '@/components/reel';
 import { Container } from '@/components/ui/container';
-import { Title } from '@/components/ui/typography';
-import { useAuth } from '@/hooks/useAuth';
+import { getPosts } from '@/services/firebase/post';
+import type { Post } from '@/services/schema/post';
 
 export default (): JSX.Element => {
-  const { logout } = useAuth();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [currentViewableIndex, setCurrentViewableIndex] = useState(0);
 
-  const onLogout = useCallback(async () => {
-    await logout();
-  }, [logout]);
+  const onFetchPosts = useCallback(async () => {
+    const _posts = await getPosts();
+    setPosts(_posts);
+  }, []);
+
+  const onViewableItemsChanged = useCallback((info: { viewableItems: Array<ViewToken<Post>> }) => {
+    if (info.viewableItems.length > 0 && typeof info.viewableItems[0].index === 'number') {
+      setCurrentViewableIndex(info.viewableItems[0].index);
+    }
+  }, []);
+
+  useEffect(() => {
+    onFetchPosts();
+  }, [onFetchPosts]);
 
   return (
-    <Container center className="gap-4">
-      <Title>The app Page</Title>
-
-      <Button
-        title="Logout"
-        onPress={onLogout}
-        textClassName="text-white"
-        className="bg-orange-500 px-4"
+    <Container className="p-0">
+      <FlatList
+        data={posts}
+        pagingEnabled
+        horizontal={false}
+        keyExtractor={item => item.postId}
+        showsVerticalScrollIndicator={false}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+        renderItem={({ item, index }) => (
+          <Reel item={item} shouldPlay={currentViewableIndex === index} />
+        )}
       />
     </Container>
   );
