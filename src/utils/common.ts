@@ -1,5 +1,14 @@
 import { Timestamp } from 'firebase/firestore';
 
+import type { User } from '@/services/schema/auth';
+import { useStore } from '@/services/storages';
+
 const now = Timestamp.fromDate(new Date());
 
-export { now };
+const updateLocalUserData = (user: User) => {
+  useStore.getState().setUserData(user);
+
+  return user;
+};
+
+export { now, updateLocalUserData };
