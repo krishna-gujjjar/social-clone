@@ -1,4 +1,12 @@
-import { type DocumentData, collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import {
+  type DocumentData,
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc,
+} from 'firebase/firestore';
 
 import { now } from '@/utils/common';
 import { postSchema } from '../schema/post';
@@ -32,7 +40,8 @@ const createPost = async (
 
 const getPosts = async () => {
   const ref = collection(db, 'posts');
-  const snapshot = await getDocs(ref);
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
   const extractor: DocumentData[] = [];
   // biome-ignore lint/complexity/noForEach: <explanation>
   snapshot.forEach(_post => {
