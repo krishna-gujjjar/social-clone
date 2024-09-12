@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, orderBy, query, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore';
 import type { DocumentData, QuerySnapshot } from 'firebase/firestore';
 
 import { now } from '@/utils/common';
@@ -54,4 +54,11 @@ const getPosts = async () => {
   return _extractSnapshots(snapshot);
 };
 
-export { createPost, getPosts };
+const searchPosts = async (search?: string) => {
+  const q = query(postRef, where('caption', '>=', search));
+  const snapshot = await getDocs(q);
+
+  return _extractSnapshots(snapshot);
+};
+
+export { createPost, getPosts, searchPosts };
