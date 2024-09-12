@@ -1,15 +1,24 @@
 import { Avatar } from '@piccy/native';
 import { Link } from 'expo-router';
+import { useMemo } from 'react';
 
+import { MetaData } from '@/components/meta-data';
 import { Button } from '@/components/ui/button';
 import { Col, Container, Inline } from '@/components/ui/container';
 import { Ionicons } from '@/components/ui/icons';
-import { Separator } from '@/components/ui/separator';
-import { Heading, Tiny, Title } from '@/components/ui/typography';
+import { Heading, Tiny } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 
 export default (): JSX.Element => {
   const { user } = useAuth();
+  const metaData = useMemo(
+    () => [
+      { title: 'Followers', value: user?.followers.length ?? 0 },
+      { title: 'Posts', value: user?.posts.length ?? 0 },
+      { title: 'Followings', value: user?.following.length ?? 0 },
+    ],
+    [user?.followers.length, user?.following.length, user?.posts.length],
+  );
 
   return (
     <Container className="gap-6">
@@ -32,22 +41,8 @@ export default (): JSX.Element => {
         </Heading>
         <Tiny className="h-28 text-justify text-slate-600">{user?.bio ?? 'No bio yet'}</Tiny>
       </Col>
-      <Inline className="rounded-3xl bg-slate-100 px-6 py-4 shadow-lg shadow-slate-500">
-        <Col className="items-center">
-          <Title>{user?.followers.length}</Title>
-          <Tiny className="text-slate-600">Followers</Tiny>
-        </Col>
-        <Separator />
-        <Col className="items-center">
-          <Title>{user?.following.length}</Title>
-          <Tiny className="text-slate-600">Followings</Tiny>
-        </Col>
-        <Separator />
-        <Col className="items-center">
-          <Title>{user?.posts.length}</Title>
-          <Tiny className="text-slate-600">Posts</Tiny>
-        </Col>
-      </Inline>
+
+      <MetaData items={metaData} />
     </Container>
   );
 };
