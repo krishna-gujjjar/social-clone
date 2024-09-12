@@ -56,14 +56,12 @@ export const useAuth = () => {
   const updateSelf = useCallback(
     async (data: Partial<z.infer<typeof userSchema>>) => {
       if (typeof user?.userId === 'string') {
-        await updateUser(user?.userId, data);
-
-        return await fetchUserData(user.userId);
+        return await updateUser(user?.userId, data);
       }
 
       return null;
     },
-    [fetchUserData, user?.userId],
+    [user?.userId],
   );
 
   const logout = useCallback(async () => {
