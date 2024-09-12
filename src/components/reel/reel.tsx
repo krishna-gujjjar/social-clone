@@ -5,6 +5,8 @@ import { Pressable, View } from 'react-native';
 
 import { usePauseable } from '@/hooks/usePauseable';
 import type { Post } from '@/services/schema/post';
+import { Reactions } from './reactions';
+import { UserInfo } from './user-info';
 
 interface ReelProps {
   item: Post;
@@ -40,6 +42,10 @@ const Component = (props: ReelProps): JSX.Element => {
           onPlaybackStatusUpdate={onPlaybackStatusUpdate}
           posterStyle={{ width: '100%', height: '100%', resizeMode: 'cover' }}
         />
+
+        <Reactions item={props.item} />
+
+        <UserInfo userId={props.item.userId} caption={props.item.caption} />
       </View>
     </Pressable>
   );
