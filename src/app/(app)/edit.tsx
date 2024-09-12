@@ -1,8 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Avatar } from '@piccy/native';
+import * as MediaPicker from 'expo-image-picker';
 import { Link, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
+import { Pressable, View } from 'react-native';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
 import { Label } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
+import { uploadMedia } from '@/services/firebase/media';
 
 const userSchema = z.object({
   firstName: z
@@ -32,23 +36,38 @@ const userSchema = z.object({
     .max(160)
     .trim()
     .transform(data => data.toLowerCase()),
+  profileImage: z.string().url(),
 });
 
 export default (): JSX.Element => {
   const router = useRouter();
   const { user, updateSelf } = useAuth();
+  const [previewUrl, setPreviewUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { control, handleSubmit, setFocus, reset } = useForm<z.infer<typeof userSchema>>({
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const { control, handleSubmit, setFocus, setValue, reset } = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
   });
+
+  const previewLink = useMemo(() => {
+    return previewUrl.length > 1
+      ? { uri: previewUrl }
+      : typeof user?.profileImage === 'string'
+        ? { uri: user?.profileImage }
+        : undefined;
+  }, [previewUrl, user?.profileImage]);
 
   const onSubmit: SubmitHandler<z.infer<typeof userSchema>> = useCallback(
     data => {
       if (typeof user?.userId === 'string') {
         setIsLoading(true);
-        updateSelf({ name: { first: data.firstName, last: data.lastName }, bio: data.bio })
+        updateSelf({
+          name: { first: data.firstName, last: data.lastName },
+          profileImage: data.profileImage,
+          bio: data.bio,
+        })
           .then(() => {
-            reset({ firstName: '', lastName: '', bio: '' });
+            reset({ firstName: '', lastName: '', bio: '', profileImage: '' });
             router.replace('/settings');
           })
           .catch(console.log)
@@ -59,6 +78,23 @@ export default (): JSX.Element => {
     },
     [reset, router, updateSelf, user?.userId],
   );
+
+  const onClickMediaPicker = useCallback(async () => {
+    const result = await MediaPicker.launchImageLibraryAsync({
+      mediaTypes: MediaPicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setIsProfileLoading(true);
+      const imageUrl = await uploadMedia(result.assets[0].uri, 'image', 'users');
+      setValue('profileImage', imageUrl);
+      setPreviewUrl(imageUrl);
+      setIsProfileLoading(false);
+    }
+  }, [setValue]);
 
   return (
     <Container className="gap-6">
@@ -72,6 +108,13 @@ export default (): JSX.Element => {
       </Inline>
 
       <Col className="gap-4">
+        <View className="relative mx-auto size-28 items-center justify-center overflow-hidden rounded-full">
+          {isProfileLoading && <Loading />}
+          <Pressable onPress={onClickMediaPicker}>
+            <Avatar size={92} rounded="full" value={user?.userId ?? ''} source={previewLink} />
+          </Pressable>
+        </View>
+
         <Input
           name="firstName"
           // @ts-ignore
