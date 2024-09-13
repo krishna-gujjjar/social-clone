@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import type { ViewToken } from 'react-native';
 
 import { Reel } from '@/components/reel';
@@ -7,6 +7,8 @@ import { Container } from '@/components/ui/container';
 import { Loading } from '@/components/ui/loading';
 import { getPosts } from '@/services/firebase/post';
 import type { Post } from '@/services/schema/post';
+
+export { ErrorBoundary } from 'expo-router';
 
 export default (): JSX.Element => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -20,11 +22,11 @@ export default (): JSX.Element => {
     setIsLoading(false);
   }, []);
 
-  const onViewableItemsChanged = useCallback((info: { viewableItems: Array<ViewToken<Post>> }) => {
-    if (info.viewableItems.length > 0 && typeof info.viewableItems[0].index === 'number') {
+  const onViewableItemsChanged = (info: { viewableItems: Array<ViewToken<Post>> }) => {
+    if (info.viewableItems?.length > 0 && typeof info.viewableItems?.[0]?.index === 'number') {
       setCurrentViewableIndex(info.viewableItems[0].index);
     }
-  }, []);
+  };
 
   useEffect(() => {
     onFetchPosts();
@@ -37,10 +39,12 @@ export default (): JSX.Element => {
         data={posts}
         pagingEnabled
         horizontal={false}
+        refreshing={isLoading}
         keyExtractor={item => item.postId}
         showsVerticalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onFetchPosts} />}
         renderItem={({ item, index }) => (
           <Reel item={item} shouldPlay={currentViewableIndex === index} />
         )}
