@@ -18,11 +18,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { createPost } from '@/services/firebase/post';
 
 const formSchema = z.object({
-  caption: z.string().min(3).max(80),
+  caption: z
+    .string()
+    .min(3)
+    .max(80)
+    .transform(data => data.toLowerCase().trim()),
   videoUrl: z.string().url(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
+
+export { ErrorBoundary } from 'expo-router';
 
 export default (): JSX.Element => {
   const router = useRouter();

@@ -8,6 +8,8 @@ import { Ionicons } from '@/components/ui/icons';
 import { Paragraph, Tiny, Title } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 
+export { ErrorBoundary } from 'expo-router';
+
 export default (): JSX.Element => {
   const { logout, user } = useAuth();
 

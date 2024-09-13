@@ -8,6 +8,8 @@ import { Tiny, Title } from '@/components/ui/typography';
 import { searchPosts } from '@/services/firebase/post';
 import type { Post } from '@/services/schema/post';
 
+export { ErrorBoundary } from 'expo-router';
+
 export default (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);

@@ -39,6 +39,8 @@ const userSchema = z.object({
   profileImage: z.string().url(),
 });
 
+export { ErrorBoundary } from 'expo-router';
+
 export default (): JSX.Element => {
   const router = useRouter();
   const { user, updateSelf } = useAuth();

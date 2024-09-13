@@ -14,17 +14,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { postsById } from '@/services/firebase/post';
 import type { Post } from '@/services/schema/post';
 
+export { ErrorBoundary } from 'expo-router';
+
 export default (): JSX.Element => {
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const metaData = useMemo(
     () => [
-      { id: '1', title: 'Followers', value: user?.followers.length ?? 0 },
-      { id: '2', title: 'Posts', value: user?.posts.length ?? 0 },
-      { id: '3', title: 'Followings', value: user?.following.length ?? 0 },
+      { id: '1', title: 'Followers', value: user?.followers?.length ?? 0 },
+      { id: '2', title: 'Posts', value: user?.posts?.length ?? 0 },
+      { id: '3', title: 'Followings', value: user?.following?.length ?? 0 },
     ],
-    [user?.followers.length, user?.following.length, user?.posts.length],
+    [user?.followers?.length, user?.following?.length, user?.posts?.length],
   );
 
   const fetchPosts = useCallback(() => {
@@ -73,7 +75,7 @@ export default (): JSX.Element => {
         {isLoading && <Loading />}
         <Inline className="flex-wrap justify-start gap-2">
           {posts.map(post => (
-            <SmallReel key={post.postId} item={post} />
+            <SmallReel key={`small-reel-${post.postId}`} item={post} />
           ))}
         </Inline>
       </View>

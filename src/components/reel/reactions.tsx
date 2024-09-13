@@ -25,7 +25,7 @@ interface ReactionsProps {
 
 const ActionButton = (props: ActionButtonProps): JSX.Element => (
   <Button onPress={props.onPress} className="rounded-xl bg-transparent p-0">
-    <View className="-top-[42%] -right-[42%] absolute z-10 size-6 items-center justify-center rounded-full bg-blue-500/80">
+    <View className="-top-[35%] -right-[35%] absolute z-10 size-6 items-center justify-center rounded-full bg-blue-500/80">
       <Tiny className=" text-slate-100 text-xs">{props.value}</Tiny>
     </View>
     {props.type === 'like' ? (
@@ -68,7 +68,7 @@ const Reactions = (props: ReactionsProps): JSX.Element => {
   const onComment = () => {};
 
   return (
-    <Col className="absolute right-4 bottom-[15%] flex-col items-center gap-10">
+    <Col className="absolute right-[5%] bottom-[15%] flex-col items-center gap-10">
       {metaData.map(meta => (
         <ActionButton
           key={meta.id}
