@@ -14,12 +14,12 @@ A social media app with react native.
 - [x] Login.
 - [x] Logout.
 - [x] Bottom Tab.
-- [-] Home page with reels.
+- [x] Home page with reels.
 - [x] Upload Video file.
-- [-] Search page.
-- [-] Profile page.
+- [x] Search page.
+- [x] Profile page.
 - [x] Update Profile page.
-- [ ] Follow other user.
-- [ ] Un-follow other user.
-- [ ] Like a post.
+- [x] Follow other user.
+- [x] Un-follow other user.
+- [x] Like a post.
 - [ ] Comment on a post.
