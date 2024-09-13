@@ -5,6 +5,8 @@ import { Pressable, View } from 'react-native';
 
 import { usePauseable } from '@/hooks/usePauseable';
 import type { Post } from '@/services/schema/post';
+import { Button } from '../ui/button';
+import { Ionicons } from '../ui/icons';
 import { Reactions } from './reactions';
 import { UserInfo } from './user-info';
 
@@ -14,14 +16,16 @@ interface ReelProps {
 }
 
 const Component = (props: ReelProps): JSX.Element => {
-  const video = usePauseable(useRef(null), props.shouldPlay);
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
+  const { video, play, pause } = usePauseable(useRef(null), props.shouldPlay);
 
   const onPress = useCallback(() => {
     if (status?.isLoaded) {
-      status.isPlaying ? video.current?.pauseAsync() : video.current?.playAsync();
+      status.isPlaying
+        ? pause('Error on video pause on press')
+        : play('Error on video play on press');
     }
-  }, [status, video.current]);
+  }, [status, play, pause]);
 
   const onPlaybackStatusUpdate = useCallback((_status: AVPlaybackStatus) => {
     setStatus(() => _status);
@@ -34,14 +38,21 @@ const Component = (props: ReelProps): JSX.Element => {
           isLooping
           usePoster
           ref={video}
+          onError={console.error}
           useNativeControls={false}
           resizeMode={ResizeMode.COVER}
-          source={{ uri: props.item.videoUrl }}
           style={{ width: '100%', height: '100%' }}
           posterSource={{ uri: props.item.imageUrl }}
           onPlaybackStatusUpdate={onPlaybackStatusUpdate}
           posterStyle={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+          source={{ uri: props.item.videoUrl, overrideFileExtensionAndroid: 'mp4' }}
         />
+
+        {status?.isLoaded && !status.isPlaying && (
+          <Button className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 rounded-full bg-slate-100/50">
+            <Ionicons name="play" size={48} className="text-slate-100" />
+          </Button>
+        )}
 
         <Reactions item={props.item} />
 
